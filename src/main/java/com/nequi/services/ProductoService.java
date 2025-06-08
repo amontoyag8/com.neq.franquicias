@@ -1,9 +1,10 @@
 package com.nequi.services;
 
-import com.nequi.model.ProductoEntity;
-import com.nequi.model.SucursalEntity;
-import com.nequi.repositories.ProductoRepository;
 import org.springframework.stereotype.Service;
+
+import com.nequi.model.ProductoEntity;
+import com.nequi.repositories.ProductoRepository;
+
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -18,9 +19,9 @@ public class ProductoService {
 
     public Mono<ProductoEntity> actualizarNombreSucursal(Long productoId, String nombreAct){
         return productoRepository.findById(productoId)
-                .flatMap(sucursal -> {
-                    sucursal.setNombre(nombreAct);
-                    return productoRepository.save(sucursal);
+                .flatMap(sucursales -> {
+                    sucursales.setNombre(nombreAct);
+                    return productoRepository.save(sucursales);
                 });
     }
 

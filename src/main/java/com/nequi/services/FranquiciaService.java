@@ -1,8 +1,10 @@
 package com.nequi.services;
 
+import org.springframework.stereotype.Service;
+
 import com.nequi.model.FranquiciaEntity;
 import com.nequi.repositories.FranquiciaRepository;
-import org.springframework.stereotype.Service;
+
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -17,11 +19,10 @@ public class FranquiciaService {
     public Mono<FranquiciaEntity> actualizarNombreFranquicia(Long franquiciaId, String nombreAct)
     {
         return franquiciaRepository.findById(franquiciaId)
-                .flatMap(franquicia -> {
-                    franquicia.setNombre(nombreAct);
-                    return franquiciaRepository.save(franquicia);
+                .flatMap(franquicias -> {
+                    franquicias.setNombre(nombreAct);
+                    return franquiciaRepository.save(franquicias);
                 });
-
     }
 
     public Flux<FranquiciaEntity> obtenerTodasFranquicias() {

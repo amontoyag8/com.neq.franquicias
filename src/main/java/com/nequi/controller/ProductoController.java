@@ -1,13 +1,19 @@
 package com.nequi.controller;
 
-import com.nequi.model.FranquiciaEntity;
-import com.nequi.model.ProductoEntity;
-import com.nequi.model.SucursalEntity;
-import com.nequi.repositories.ProductoRepository;
-import com.nequi.services.ProductoService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.nequi.model.ProductoEntity;
+import com.nequi.repositories.ProductoRepository;
+import com.nequi.services.ProductoService;
+
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -27,7 +33,7 @@ public class ProductoController {
     public Mono<ResponseEntity<String>> agregarProducto(@RequestBody ProductoEntity producto){
         return productoRepository.save(producto)
                 .map(productoGuardado -> ResponseEntity.status(HttpStatus.CREATED).body("producto Creado"))
-                .onErrorResume(e -> Mono.just(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al Crear el producto")));
+                .onErrorResume(e -> Mono.just(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al crear el producto")));
     }
 
     @PutMapping("/cambio-nombre/{productoId}")
@@ -36,7 +42,7 @@ public class ProductoController {
             return productoService.actualizarNombreSucursal(productoId, nombreAct.getNombre())
                     .map(actualizado -> ResponseEntity.ok().body("Nombre Actualizado"));
         else
-            return Mono.just(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al Actualizar El nombre del producto"));
+            return Mono.just(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al actualizar el nombre del producto"));
     }
 
 

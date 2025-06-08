@@ -1,21 +1,31 @@
 package com.nequi.controller;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.nequi.model.ProductoEntity;
 import com.nequi.model.SucursalEntity;
 import com.nequi.model.SucursalProductoEntity;
 import com.nequi.repositories.ProductoRepository;
 import com.nequi.repositories.SucursalProductoRepository;
 import com.nequi.repositories.SucursalRepository;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-import reactor.core.publisher.Mono;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
+import reactor.core.publisher.Mono;
 
 @RestController
 @RequestMapping("api/sucursal-producto")
@@ -75,7 +85,6 @@ public class SucursalProductoController {
                         return Mono.just(ResponseEntity.status(HttpStatus.NOT_FOUND).body("Sucursal o producto no Encontrado"));
                     }
                 });
-
     }
 
     @PutMapping("/actualizar-stock")
@@ -92,7 +101,6 @@ public class SucursalProductoController {
                     if(sucursal == null || producto== null){
                         return Mono.just(ResponseEntity.status(HttpStatus.NOT_FOUND).body("Producto o sucursal no encontrado"));
                     }
-
 
                     return  sucursalProductoRepository.findBySucursalIdAndProductoId(productoId, sucursalId)
                             .flatMap(sucursalProducto -> {
