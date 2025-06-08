@@ -1,0 +1,2 @@
+rootProject.name = 'com.neq.fraquicias'
+include 'fraquicias-api', 'fraquicias-service', 'fraquicias-repository', 'fraquicias-model'
