@@ -97,26 +97,24 @@ El servidor quedará disponible en `http://localhost:8080`.
 
 A continuación, algunos ejemplos de uso de los endpoints principales:
 
-### Agregar franquicia
+### Creatr franquicia
 
 ```bash
 curl --location 'http://localhost:8080/api/franquicias' \
 --header 'Content-Type: application/json' \
 --data '{
-    "nombre": "Franquicia H",
-    "direccion": "Calle 321, Ibague"
+    "nombre": "KFC"
 }'
 ```
 
-### Agregar sucursal
+### Crear sucursal
 
 ```bash
 curl --location 'http://localhost:8080/api/sucursales' \
 --header 'Content-Type: application/json' \
 --data '{
-  "nombre": "Sucursal C",
-  "direccion": "Calle 789, Ciudad",
-  "franquiciaId": 1
+  "nombre": "Frisby Santa Fe",
+  "franquiciaId": 6
 }'
 ```
 
@@ -126,20 +124,18 @@ curl --location 'http://localhost:8080/api/sucursales' \
 curl --location 'http://localhost:8080/api/productos' \
 --header 'Content-Type: application/json' \
 --data '{
-  "nombre": "Lapiceros",
-  "descripcion": "Lapicero de tinta color negro",
-  "precio": 3.0
+  "nombre": "Gaseosa"
 }'
 ```
 
 ### Asignar producto a sucursal
 
 ```bash
-curl --location 'http://localhost:8080/api/sucursal-producto' \
+curl --location 'http://localhost:8080/api/productos-sucursal' \
 --header 'Content-Type: application/json' \
 --data '{
-  "productoId": 4,
-  "sucursalId": 3,
+  "productoId": 11,
+  "sucursalId": 6,
   "stock": 1000
 }'
 ```
@@ -147,35 +143,35 @@ curl --location 'http://localhost:8080/api/sucursal-producto' \
 ### Eliminar producto de sucursal
 
 ```bash
-curl --location --request DELETE 'http://localhost:8080/api/sucursal-producto?productoId=1&sucursalId=1'
+curl --location --request DELETE 'http://localhost:8080/api/productos-sucursal?productoId=1&sucursalId=1'
 ```
 
 ### Actualizar stock de producto
 
 ```bash
-curl --location --request PUT 'http://localhost:8080/api/sucursal-producto/actualizar-stock?productoId=1&sucursalId=1&stock=50'
+curl --location --request PUT 'http://localhost:8080/api/productos-sucursal/actualizar-stock?productoId=11&sucursalId=10&stock=5000'
 ```
 
-### Listar producto con más stock por sucursal de una franquicia
+### Obtener producto con más stock por sucursal de una franquicia
 
 ```bash
-curl --location 'http://localhost:8080/api/sucursal-producto/1/productos-mas-stock'
+curl --location 'http://localhost:8080/api/productos-sucursal/prod-stock-mas/6'
 ```
 
 ### Actualizar nombre de franquicia
 
 ```bash
-curl --location --request PUT 'http://localhost:8080/api/franquicias/cambio-nombre/1' \
+curl --location --request PUT 'http://localhost:8080/api/franquicias/8' \
 --header 'Content-Type: application/json' \
 --data '{
-    "nombre": "Franquicia Coca-Cola"
+    "nombre": "Llanerito"
 }'
 ```
 
 ### Actualizar nombre de sucursal
 
 ```bash
-curl --location --request PUT 'http://localhost:8080/api/sucursales/cambio-nombre/1' \
+curl --location --request PUT 'http://localhost:8080/api/sucursales/1' \
 --header 'Content-Type: application/json' \
 --data '{
     "nombre": "Sucursal Nueva"
@@ -185,34 +181,27 @@ curl --location --request PUT 'http://localhost:8080/api/sucursales/cambio-nombr
 ### Actualizar nombre de producto
 
 ```bash
-curl --location --request PUT 'http://localhost:8080/api/productos/cambio-nombre/1' \
+curl --location --request PUT 'http://localhost:8080/api/productos/13' \
 --header 'Content-Type: application/json' \
 --data '{
-    "nombre": "Producto Actualizado"
+    "nombre": "Frischuleta"
 }'
 ```
 
-### Listar todas las franquicias
+### Obtener todas las franquicias
 
 ```bash
 curl --location 'http://localhost:8080/api/franquicias/all'
 ```
 
-### Listar sucursales por franquicia
+### Obtener sucursales por franquicia
 
 ```bash
-curl --location 'http://localhost:8080/api/sucursales/allByFranquisiaId/1'
+curl --location 'http://localhost:8080/api/sucursales/allByFranquisiaId/6'
 ```
 
-### Listar todos los productos
+### Obtener todos los productos
 
 ```bash
 curl --location 'http://localhost:8080/api/productos/all'
 ```
-
----
-
-**Nota:**  
-Para mayor comodidad, consulta la colección de Postman incluida en los recursos del proyecto.
-
----
