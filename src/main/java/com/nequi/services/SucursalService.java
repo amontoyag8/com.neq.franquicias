@@ -1,8 +1,10 @@
 package com.nequi.services;
 
+import org.springframework.stereotype.Service;
+
 import com.nequi.model.SucursalEntity;
 import com.nequi.repositories.SucursalRepository;
-import org.springframework.stereotype.Service;
+
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -16,9 +18,9 @@ public class SucursalService {
 
     public Mono<SucursalEntity> actualizarNombreSucursal(Long sucursalId, String nombreAct){
         return sucursalRepository.findById(sucursalId)
-                .flatMap(sucursal -> {
-                    sucursal.setNombre(nombreAct);
-                    return sucursalRepository.save(sucursal);
+                .flatMap(sucursales-> {
+                    sucursales.setNombre(nombreAct);
+                    return sucursalRepository.save(sucursales);
                 });
     }
 

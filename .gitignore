@@ -26,5 +26,68 @@ replay_pid*
 # SQL files
 *.sql
 
-git config --global user.email "you@example.com"
-  git config --global user.name "Your Name"
+# Compiled source #
+####################
+*.class
+*.jar
+*.war
+*.ear
+
+# Packages #
+############
+*.7z
+*.rar
+*.zip
+*.tar
+*.gz
+
+# Logs and reports #
+####################
+*.log
+*.txt
+*.csv
+*.out
+
+# IDE #
+#######
+.idea
+*.iml
+.settings/
+.classpath
+.project
+bin/
+out/
+*.ipr
+*.iws
+.DS_Store
+.vscode/
+
+# Backup files #
+###############
+*.bak
+*.swp
+
+# Gradle #
+##########
+/.gradle/
+/.gradle/caches/
+/.gradle/build/
+.gradle/buildOutputCleanup/*
+build/
+
+# Maven #
+#########
+target/
+*.properties
+.mvn/wrapper/maven-wrapper.jar
+.mvn/wrapper/maven-wrapper.properties
+
+# Node #
+########
+node_modules/
+
+# Sensitive files #
+####################
+application.properties
+application.yml
+env.properties

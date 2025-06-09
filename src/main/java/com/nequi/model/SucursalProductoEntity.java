@@ -4,7 +4,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 
-@Table("sucursal_producto")
+@Table("productos_sucursal")
 public class SucursalProductoEntity {
 
     @Id
@@ -18,7 +18,6 @@ public class SucursalProductoEntity {
 
     @Column("id_producto")
     private Long productoId;
-
 
     public Long getId() {
         return id;
