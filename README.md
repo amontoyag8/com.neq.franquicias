@@ -1,6 +1,6 @@
 # Prueba Nequi Franquicias
 
-Aplicación web para la gestión de franquicias, sucursales y productos, desarrollada con **Spring WebFlux** y conectada a una base de datos relacional en **Amazon Aurora MySQL**.
+Aplicación web para la administracion de franquicias, sucursales, productos y stock de productos en sucursal, desarrollada con **Spring Boot** y conectada a una base de datos relacional sobre el RDS **Amazon Aurora MySQL**.
 
 ---
 
@@ -18,7 +18,7 @@ Aplicación web para la gestión de franquicias, sucursales y productos, desarro
 
 ## Descripción
 
-Sistema de gestión de franquicias que permite:
+Sistema de administracion de franquicias que permite:
 
 - Agregar, actualizar y listar franquicias, sucursales y productos.
 - Asignar productos a sucursales y gestionar su stock.
@@ -26,14 +26,14 @@ Sistema de gestión de franquicias que permite:
 - Consultar productos con mayor stock por sucursal de una franquicia.
 - Actualizar nombres de franquicias, sucursales y productos.
 
-La aplicación utiliza **Spring WebFlux** para un manejo eficiente y reactivo de solicitudes concurrentes.
+La aplicación utiliza el manejo eficiente y reactivo de solicitudes concurrentes por medio de Spring Webflux.
 
 ---
 
 ## Características
 
 - Conexión a base de datos **Amazon Aurora MySQL**.
-- Endpoints REST para gestionar franquicias, sucursales y productos.
+- Endpoints REST para gestionar franquicias, sucursales, productos y existencias.
 - Acceso a datos eficiente mediante patrones reactivos.
 
 ---
@@ -52,8 +52,8 @@ La aplicación utiliza **Spring WebFlux** para un manejo eficiente y reactivo de
 ## Requisitos Previos
 
 - **JDK 21** o superior.
-- **Gradle**.
-- **MySQL** o **DBeaver** para visualizar la base de datos (opcional).
+- **Gradle 8.14** o superior.
+- **DBeaver** para visualizar la base de datos.
 
 ---
 
@@ -61,23 +61,23 @@ La aplicación utiliza **Spring WebFlux** para un manejo eficiente y reactivo de
 
 1. **Clonar el repositorio**  
    ```bash
-   git clone https://github.com/CamiloAGarciaMorales/franquicias.git
+   git clone https://github.com/amontoyag8/com.neq.franquicias.git
    ```
 
-2. **Construir el proyecto**  
-   Ubícate en la carpeta del proyecto y ejecuta:
+2. **Construiccion del proyecto**
+   Ubicarse en la carpeta del proyecto y ejecuta:
    ```bash
    ./gradlew clean
    ./gradlew build
    ```
 
 3. **Configurar la base de datos**  
-   - La base de datos está alojada en AWS Aurora RDS.
+   - La base de datos está alojada en AWS Aurora RDS en una instancia publica que estara disponible en las reglas mediante esta prueba sea evaluada.
    - Las credenciales y la URL de conexión se encuentran en el archivo `application.properties` dentro de la carpeta `resources`.
 
 4. **Herramienta para pruebas de endpoints**  
    - Se recomienda usar **Postman**.
-   - Se adjunta una colección de Postman con todos los endpoints configurados en la carpeta de recursos del proyecto.
+   - Adjunta una colección de Postman con todos los endpoints configurados en la carpeta de recursos del proyecto.
 
 ---
 
@@ -95,51 +95,47 @@ El servidor quedará disponible en `http://localhost:8080`.
 
 ## Endpoints
 
-A continuación, algunos ejemplos de uso de los endpoints principales:
+A continuación, los CURL con los ejemplos de uso de cada uno de los endpoints del API:
 
-### Agregar franquicia
+### Crear franquicia
 
 ```bash
 curl --location 'http://localhost:8080/api/franquicias' \
 --header 'Content-Type: application/json' \
 --data '{
-    "nombre": "Franquicia H",
-    "direccion": "Calle 321, Ibague"
+    "nombre": "KFC"
 }'
 ```
 
-### Agregar sucursal
+### Crear sucursal
 
 ```bash
 curl --location 'http://localhost:8080/api/sucursales' \
 --header 'Content-Type: application/json' \
 --data '{
-  "nombre": "Sucursal C",
-  "direccion": "Calle 789, Ciudad",
-  "franquiciaId": 1
+  "nombre": "Frisby Santa Fe",
+  "franquiciaId": 6
 }'
 ```
 
-### Agregar producto
+### Crear producto
 
 ```bash
 curl --location 'http://localhost:8080/api/productos' \
 --header 'Content-Type: application/json' \
 --data '{
-  "nombre": "Lapiceros",
-  "descripcion": "Lapicero de tinta color negro",
-  "precio": 3.0
+  "nombre": "Gaseosa"
 }'
 ```
 
-### Asignar producto a sucursal
+### Crear stock de producto en sucursal
 
 ```bash
-curl --location 'http://localhost:8080/api/sucursal-producto' \
+curl --location 'http://localhost:8080/api/productos-sucursal' \
 --header 'Content-Type: application/json' \
 --data '{
-  "productoId": 4,
-  "sucursalId": 3,
+  "productoId": 11,
+  "sucursalId": 6,
   "stock": 1000
 }'
 ```
@@ -147,35 +143,35 @@ curl --location 'http://localhost:8080/api/sucursal-producto' \
 ### Eliminar producto de sucursal
 
 ```bash
-curl --location --request DELETE 'http://localhost:8080/api/sucursal-producto?productoId=1&sucursalId=1'
+curl --location --request DELETE 'http://localhost:8080/api/productos-sucursal?productoId=1&sucursalId=1'
 ```
 
 ### Actualizar stock de producto
 
 ```bash
-curl --location --request PUT 'http://localhost:8080/api/sucursal-producto/actualizar-stock?productoId=1&sucursalId=1&stock=50'
+curl --location --request PUT 'http://localhost:8080/api/productos-sucursal/actualizar-stock?productoId=11&sucursalId=10&stock=5000'
 ```
 
-### Listar producto con más stock por sucursal de una franquicia
+### Obtener producto con más stock por sucursal de una franquicia
 
 ```bash
-curl --location 'http://localhost:8080/api/sucursal-producto/1/productos-mas-stock'
+curl --location 'http://localhost:8080/api/productos-sucursal/prod-stock-mas/6'
 ```
 
 ### Actualizar nombre de franquicia
 
 ```bash
-curl --location --request PUT 'http://localhost:8080/api/franquicias/cambio-nombre/1' \
+curl --location --request PUT 'http://localhost:8080/api/franquicias/8' \
 --header 'Content-Type: application/json' \
 --data '{
-    "nombre": "Franquicia Coca-Cola"
+    "nombre": "Llanerito"
 }'
 ```
 
 ### Actualizar nombre de sucursal
 
 ```bash
-curl --location --request PUT 'http://localhost:8080/api/sucursales/cambio-nombre/1' \
+curl --location --request PUT 'http://localhost:8080/api/sucursales/1' \
 --header 'Content-Type: application/json' \
 --data '{
     "nombre": "Sucursal Nueva"
@@ -185,34 +181,27 @@ curl --location --request PUT 'http://localhost:8080/api/sucursales/cambio-nombr
 ### Actualizar nombre de producto
 
 ```bash
-curl --location --request PUT 'http://localhost:8080/api/productos/cambio-nombre/1' \
+curl --location --request PUT 'http://localhost:8080/api/productos/13' \
 --header 'Content-Type: application/json' \
 --data '{
-    "nombre": "Producto Actualizado"
+    "nombre": "Frischuleta"
 }'
 ```
 
-### Listar todas las franquicias
+### Obtener todas las franquicias
 
 ```bash
 curl --location 'http://localhost:8080/api/franquicias/all'
 ```
 
-### Listar sucursales por franquicia
+### Obtener sucursales por franquicia
 
 ```bash
-curl --location 'http://localhost:8080/api/sucursales/allByFranquisiaId/1'
+curl --location 'http://localhost:8080/api/sucursales/allByFranquisiaId/6'
 ```
 
-### Listar todos los productos
+### Obtener todos los productos
 
 ```bash
 curl --location 'http://localhost:8080/api/productos/all'
 ```
-
----
-
-**Nota:**  
-Para mayor comodidad, consulta la colección de Postman incluida en los recursos del proyecto.
-
----
