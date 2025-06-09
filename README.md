@@ -1,6 +1,6 @@
 # Prueba Nequi Franquicias
 
-Aplicación web para la gestión de franquicias, sucursales y productos, desarrollada con **Spring WebFlux** y conectada a una base de datos relacional en **Amazon Aurora MySQL**.
+Aplicación web para la administracion de franquicias, sucursales, productos y stock de productos en sucursal, desarrollada con **Spring Boot** y conectada a una base de datos relacional sobre el RDS **Amazon Aurora MySQL**.
 
 ---
 
@@ -18,7 +18,7 @@ Aplicación web para la gestión de franquicias, sucursales y productos, desarro
 
 ## Descripción
 
-Sistema de gestión de franquicias que permite:
+Sistema de administracion de franquicias que permite:
 
 - Agregar, actualizar y listar franquicias, sucursales y productos.
 - Asignar productos a sucursales y gestionar su stock.
@@ -26,14 +26,14 @@ Sistema de gestión de franquicias que permite:
 - Consultar productos con mayor stock por sucursal de una franquicia.
 - Actualizar nombres de franquicias, sucursales y productos.
 
-La aplicación utiliza **Spring WebFlux** para un manejo eficiente y reactivo de solicitudes concurrentes.
+La aplicación utiliza el manejo eficiente y reactivo de solicitudes concurrentes por medio de Spring Webflux.
 
 ---
 
 ## Características
 
 - Conexión a base de datos **Amazon Aurora MySQL**.
-- Endpoints REST para gestionar franquicias, sucursales y productos.
+- Endpoints REST para gestionar franquicias, sucursales, productos y existencias.
 - Acceso a datos eficiente mediante patrones reactivos.
 
 ---
@@ -52,8 +52,8 @@ La aplicación utiliza **Spring WebFlux** para un manejo eficiente y reactivo de
 ## Requisitos Previos
 
 - **JDK 21** o superior.
-- **Gradle**.
-- **MySQL** o **DBeaver** para visualizar la base de datos (opcional).
+- **Gradle 8.14** o superior.
+- **DBeaver** para visualizar la base de datos.
 
 ---
 
@@ -61,23 +61,23 @@ La aplicación utiliza **Spring WebFlux** para un manejo eficiente y reactivo de
 
 1. **Clonar el repositorio**  
    ```bash
-   git clone https://github.com/CamiloAGarciaMorales/franquicias.git
+   git clone https://github.com/amontoyag8/com.neq.franquicias.git
    ```
 
-2. **Construir el proyecto**  
-   Ubícate en la carpeta del proyecto y ejecuta:
+2. **Construiccion del proyecto**
+   Ubicarse en la carpeta del proyecto y ejecuta:
    ```bash
    ./gradlew clean
    ./gradlew build
    ```
 
 3. **Configurar la base de datos**  
-   - La base de datos está alojada en AWS Aurora RDS.
+   - La base de datos está alojada en AWS Aurora RDS en una instancia publica que estara disponible en las reglas mediante esta prueba sea evaluada.
    - Las credenciales y la URL de conexión se encuentran en el archivo `application.properties` dentro de la carpeta `resources`.
 
 4. **Herramienta para pruebas de endpoints**  
    - Se recomienda usar **Postman**.
-   - Se adjunta una colección de Postman con todos los endpoints configurados en la carpeta de recursos del proyecto.
+   - Adjunta una colección de Postman con todos los endpoints configurados en la carpeta de recursos del proyecto.
 
 ---
 
@@ -95,9 +95,9 @@ El servidor quedará disponible en `http://localhost:8080`.
 
 ## Endpoints
 
-A continuación, algunos ejemplos de uso de los endpoints principales:
+A continuación, los CURL con los ejemplos de uso de cada uno de los endpoints del API:
 
-### Creatr franquicia
+### Crear franquicia
 
 ```bash
 curl --location 'http://localhost:8080/api/franquicias' \
@@ -118,7 +118,7 @@ curl --location 'http://localhost:8080/api/sucursales' \
 }'
 ```
 
-### Agregar producto
+### Crear producto
 
 ```bash
 curl --location 'http://localhost:8080/api/productos' \
@@ -128,7 +128,7 @@ curl --location 'http://localhost:8080/api/productos' \
 }'
 ```
 
-### Asignar producto a sucursal
+### Crear stock de producto en sucursal
 
 ```bash
 curl --location 'http://localhost:8080/api/productos-sucursal' \
