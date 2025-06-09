@@ -1,12 +1,20 @@
 package com.nequi.controller;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.nequi.model.SucursalEntity;
 import com.nequi.repositories.FranquiciaRepository;
 import com.nequi.repositories.SucursalRepository;
 import com.nequi.services.SucursalService;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -35,13 +43,13 @@ public class SucursalController {
                 .defaultIfEmpty(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
 
-    @PutMapping("/cambio-nombre/{sucursalId}")
+    @PutMapping("/{sucursalId}")
     public Mono<ResponseEntity<String>>actualizarNombreSucursal(@PathVariable Long sucursalId, @RequestBody SucursalEntity nombreAct){
         if(nombreAct.getNombre() != null)
             return sucursalService.actualizarNombreSucursal(sucursalId, nombreAct.getNombre())
-                    .map(actualizado -> ResponseEntity.ok().body("Nombre Actualizado"));
+                    .map(actualizado -> ResponseEntity.ok().body("Nombre actualizado"));
         else
-            return Mono.just(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al Actualizar El nombre de la Sucursal"));
+            return Mono.just(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al actualizar el nombre de la Sucursal"));
     }
 
     @GetMapping("/allByFranquisiaId/{franquiciaId}")
