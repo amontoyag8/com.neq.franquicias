@@ -1,24 +1,34 @@
 package com.nequi.controller;
 
-import com.nequi.model.ProductoEntity;
-import com.nequi.model.SucursalEntity;
-import com.nequi.model.SucursalProductoEntity;
-import com.nequi.repositories.ProductoRepository;
-import com.nequi.repositories.SucursalProductoRepository;
-import com.nequi.repositories.SucursalRepository;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-import reactor.core.publisher.Mono;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.nequi.model.ProductoEntity;
+import com.nequi.model.SucursalEntity;
+import com.nequi.model.SucursalProductoEntity;
+import com.nequi.repositories.ProductoRepository;
+import com.nequi.repositories.SucursalProductoRepository;
+import com.nequi.repositories.SucursalRepository;
+
+import reactor.core.publisher.Mono;
+
 @RestController
-@RequestMapping("api/sucursal-producto")
+@RequestMapping("api/productos-sucursal")
 public class SucursalProductoController {
 
     private final ProductoRepository productoRepository;
@@ -47,11 +57,11 @@ public class SucursalProductoController {
                                 .flatMap(existenAmbos -> {
                                     existenAmbos.setStock(existenAmbos.getStock() + sucursalProducto.getStock());
                                     return sucursalProductoRepository.save(existenAmbos)
-                                            .map(agregado -> ResponseEntity.ok("Stock Agregado"));
+                                            .map(agregado -> ResponseEntity.ok("Stock agregado"));
                                 })
-                                .switchIfEmpty(sucursalProductoRepository.save(sucursalProducto).map(guardado -> ResponseEntity.status(HttpStatus.CREATED).body("Producto Agregado")));
+                                .switchIfEmpty(sucursalProductoRepository.save(sucursalProducto).map(guardado -> ResponseEntity.status(HttpStatus.CREATED).body("Producto agregado")));
                     }else {
-                        return Mono.just(ResponseEntity.status(HttpStatus.NOT_FOUND).body("Sucursal o producto no Encontrado"));
+                        return Mono.just(ResponseEntity.status(HttpStatus.NOT_FOUND).body("Sucursal o producto no encontrado"));
                     }
                 });
     }
@@ -69,16 +79,15 @@ public class SucursalProductoController {
 
                     if(sucursal != null && producto != null){
                         return  sucursalProductoRepository.deleteBySucursalIdAndProductoId(productoId, sucursalId)
-                                .then(Mono.just(ResponseEntity.ok().body("producto Eliminado de la sucursal")))
-                                .onErrorResume(e -> Mono.just(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error Al eliminar el producto de la sucursal.")));
+                                .then(Mono.just(ResponseEntity.ok().body("Producto eliminado de la sucursal")))
+                                .onErrorResume(e -> Mono.just(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al eliminar el producto de la sucursal.")));
                     }else {
-                        return Mono.just(ResponseEntity.status(HttpStatus.NOT_FOUND).body("Sucursal o producto no Encontrado"));
+                        return Mono.just(ResponseEntity.status(HttpStatus.NOT_FOUND).body("Sucursal o producto no encontrado"));
                     }
                 });
-
     }
 
-    @PutMapping("/actualizar-stock")
+    @PutMapping
     public Mono<ResponseEntity<String>> actualizarStock(@RequestParam Long productoId, @RequestParam Long sucursalId, @RequestParam int stock){
 
         Mono<SucursalEntity> sucursalEntityMono = sucursalRepository.findById(sucursalId);
@@ -93,7 +102,6 @@ public class SucursalProductoController {
                         return Mono.just(ResponseEntity.status(HttpStatus.NOT_FOUND).body("Producto o sucursal no encontrado"));
                     }
 
-
                     return  sucursalProductoRepository.findBySucursalIdAndProductoId(productoId, sucursalId)
                             .flatMap(sucursalProducto -> {
                                if(sucursalProducto == null){
@@ -101,12 +109,12 @@ public class SucursalProductoController {
                                }
                                sucursalProducto.setStock(stock);
                                return sucursalProductoRepository.save(sucursalProducto)
-                                       .then(Mono.just(ResponseEntity.ok().body("Stock Actualizado")));
+                                       .then(Mono.just(ResponseEntity.ok().body("Stock actualizado")));
                             });
                 });
-
     }
-    @GetMapping("/{franquiciaId}/productos-mas-stock")
+
+    @GetMapping("/prod-stock-mas/{franquiciaId}")
     public Mono<ResponseEntity<List<SucursalProductoEntity>>>obtenerProductosConMasStockPorSucursal(@PathVariable Long franquiciaId){
 
         return sucursalRepository.findByFranquiciaId(franquiciaId).collectList()
