@@ -43,7 +43,7 @@ public class SucursalController {
                 .defaultIfEmpty(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
 
-    @PutMapping("/cambio-nombre/{sucursalId}")
+    @PutMapping("/{sucursalId}")
     public Mono<ResponseEntity<String>>actualizarNombreSucursal(@PathVariable Long sucursalId, @RequestBody SucursalEntity nombreAct){
         if(nombreAct.getNombre() != null)
             return sucursalService.actualizarNombreSucursal(sucursalId, nombreAct.getNombre())

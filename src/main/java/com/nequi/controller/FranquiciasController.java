@@ -41,7 +41,7 @@ public class FranquiciasController {
                 .onErrorResume(e -> Mono.just(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al crear la franquicia")));
     }
 
-    @PutMapping("/cambio-nombre/{franquiciaId}")
+    @PutMapping("/{franquiciaId}")
     public Mono<ResponseEntity<String>> updateFranquicia(@PathVariable Long franquiciaId, @RequestBody FranquiciaEntity nombreAct)
     {
         if(nombreAct.getNombre() != null) {

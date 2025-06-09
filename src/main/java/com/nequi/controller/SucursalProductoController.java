@@ -28,7 +28,7 @@ import com.nequi.repositories.SucursalRepository;
 import reactor.core.publisher.Mono;
 
 @RestController
-@RequestMapping("api/sucursal-producto")
+@RequestMapping("api/productos-sucursal")
 public class SucursalProductoController {
 
     private final ProductoRepository productoRepository;
@@ -57,11 +57,11 @@ public class SucursalProductoController {
                                 .flatMap(existenAmbos -> {
                                     existenAmbos.setStock(existenAmbos.getStock() + sucursalProducto.getStock());
                                     return sucursalProductoRepository.save(existenAmbos)
-                                            .map(agregado -> ResponseEntity.ok("Stock Agregado"));
+                                            .map(agregado -> ResponseEntity.ok("Stock agregado"));
                                 })
-                                .switchIfEmpty(sucursalProductoRepository.save(sucursalProducto).map(guardado -> ResponseEntity.status(HttpStatus.CREATED).body("Producto Agregado")));
+                                .switchIfEmpty(sucursalProductoRepository.save(sucursalProducto).map(guardado -> ResponseEntity.status(HttpStatus.CREATED).body("Producto agregado")));
                     }else {
-                        return Mono.just(ResponseEntity.status(HttpStatus.NOT_FOUND).body("Sucursal o producto no Encontrado"));
+                        return Mono.just(ResponseEntity.status(HttpStatus.NOT_FOUND).body("Sucursal o producto no encontrado"));
                     }
                 });
     }
@@ -79,15 +79,15 @@ public class SucursalProductoController {
 
                     if(sucursal != null && producto != null){
                         return  sucursalProductoRepository.deleteBySucursalIdAndProductoId(productoId, sucursalId)
-                                .then(Mono.just(ResponseEntity.ok().body("producto Eliminado de la sucursal")))
-                                .onErrorResume(e -> Mono.just(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error Al eliminar el producto de la sucursal.")));
+                                .then(Mono.just(ResponseEntity.ok().body("Producto eliminado de la sucursal")))
+                                .onErrorResume(e -> Mono.just(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al eliminar el producto de la sucursal.")));
                     }else {
-                        return Mono.just(ResponseEntity.status(HttpStatus.NOT_FOUND).body("Sucursal o producto no Encontrado"));
+                        return Mono.just(ResponseEntity.status(HttpStatus.NOT_FOUND).body("Sucursal o producto no encontrado"));
                     }
                 });
     }
 
-    @PutMapping("/actualizar-stock")
+    @PutMapping
     public Mono<ResponseEntity<String>> actualizarStock(@RequestParam Long productoId, @RequestParam Long sucursalId, @RequestParam int stock){
 
         Mono<SucursalEntity> sucursalEntityMono = sucursalRepository.findById(sucursalId);
@@ -109,12 +109,12 @@ public class SucursalProductoController {
                                }
                                sucursalProducto.setStock(stock);
                                return sucursalProductoRepository.save(sucursalProducto)
-                                       .then(Mono.just(ResponseEntity.ok().body("Stock Actualizado")));
+                                       .then(Mono.just(ResponseEntity.ok().body("Stock actualizado")));
                             });
                 });
-
     }
-    @GetMapping("/{franquiciaId}/productos-mas-stock")
+
+    @GetMapping("/prod-stock-mas/{franquiciaId}")
     public Mono<ResponseEntity<List<SucursalProductoEntity>>>obtenerProductosConMasStockPorSucursal(@PathVariable Long franquiciaId){
 
         return sucursalRepository.findByFranquiciaId(franquiciaId).collectList()

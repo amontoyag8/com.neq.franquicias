@@ -32,11 +32,11 @@ public class ProductoController {
     @PostMapping
     public Mono<ResponseEntity<String>> agregarProducto(@RequestBody ProductoEntity producto){
         return productoRepository.save(producto)
-                .map(productoGuardado -> ResponseEntity.status(HttpStatus.CREATED).body("producto Creado"))
+                .map(productoGuardado -> ResponseEntity.status(HttpStatus.CREATED).body("Producto creado"))
                 .onErrorResume(e -> Mono.just(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al crear el producto")));
     }
 
-    @PutMapping("/cambio-nombre/{productoId}")
+    @PutMapping("/{productoId}")
     public Mono<ResponseEntity<String>>actualizarNombreProducto(@PathVariable Long productoId, @RequestBody ProductoEntity nombreAct){
         if(nombreAct.getNombre() != null)
             return productoService.actualizarNombreSucursal(productoId, nombreAct.getNombre())
