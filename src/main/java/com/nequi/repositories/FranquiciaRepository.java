@@ -1,8 +1,10 @@
 package com.nequi.repositories;
 
 
-import com.nequi.model.FranquiciaEntity;
 import org.springframework.data.repository.reactive.ReactiveCrudRepository;
+
+import com.nequi.model.FranquiciaEntity;
+
 import reactor.core.publisher.Mono;
 
 
