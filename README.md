@@ -205,3 +205,9 @@ curl --location 'http://localhost:8080/api/sucursales/allByFranquisiaId/6'
 ```bash
 curl --location 'http://localhost:8080/api/productos/all'
 ```
+
+### La dockerizacion se tiene configurada sobre GitHub Actions para subir el contenedor a un EKS que genere la alta disponibilidad de la solucion:
+
+```bash
+'https://github.com/amontoyag8/com.neq.franquicias/actions'
+```
